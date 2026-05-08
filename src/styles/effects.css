@@ -1,0 +1,30 @@
+.fx-noise {
+  position: relative;
+}
+
+.fx-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: radial-gradient(circle, #fff 0 0.45px, transparent 0.8px);
+  background-size: 10px 10px;
+}
+
+.fx-vignette {
+  position: relative;
+}
+
+.fx-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 42%,
+    rgba(0, 0, 0, 0.44) 100%
+  );
+}

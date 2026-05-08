@@ -1,0 +1,42 @@
+:root {
+  /* colors */
+  --c-bg: #090a09;
+  --c-bg-deep: #050605;
+  --c-surface: rgba(255, 255, 255, 0.045);
+  --c-surface-strong: rgba(255, 255, 255, 0.075);
+
+  --c-text: #eceee9;
+  --c-muted: #979d93;
+  --c-dim: #5d645b;
+
+  --c-line: rgba(255, 255, 255, 0.09);
+  --c-line-strong: rgba(255, 255, 255, 0.18);
+
+  --c-accent: #9af5c8;
+  --c-warm: #d8c38b;
+  --c-blue: #9db7e8;
+
+  /* fonts */
+  --font-sans: Inter, 'Noto Sans SC', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-serif-cn: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-serif-en: Georgia, 'Times New Roman', serif;
+
+  /* radius */
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 36px;
+  --r-pill: 999px;
+
+  /* shadow */
+  --shadow-float: 0 18px 70px rgba(0, 0, 0, 0.36);
+  --shadow-hero: 0 28px 100px rgba(0, 0, 0, 0.54);
+  --shadow-card: 0 24px 70px rgba(0, 0, 0, 0.28);
+
+  /* blur */
+  --blur-glass: 18px;
+
+  /* motion */
+  --ease: 0.22s ease;
+}
