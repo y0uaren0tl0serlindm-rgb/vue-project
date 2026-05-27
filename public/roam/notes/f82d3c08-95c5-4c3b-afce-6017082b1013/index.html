@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-05-11 Mon 02:50 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>L2核心内容</title>
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet" href="/roam/style.css">
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">L2核心内容</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgdd050ab">1. 核心技术清单</a>
+<ul>
+<li><a href="#orgacdbef2">1.1. 帧与寻址</a>
+<ul>
+<li><a href="#org708f91b">1.1.1. 以太网帧格式：前导码、目标MAC、源MAC、类型/长度、数据、FCS校验</a></li>
+<li><a href="#org10af91d">1.1.2. MAC地址：48位硬件地址，前24位OUI厂商码，后24位设备序列号</a></li>
+<li><a href="#orgb38bc3b">1.1.3. ARP（地址解析协议）：IP → MAC 的映射，维护ARP缓存表</a></li>
+</ul>
+</li>
+<li><a href="#org543306a">1.2. 交换机工作原理</a>
+<ul>
+<li><a href="#org3b24bc7">1.2.1. MAC地址表：交换机学习端口与MAC的对应关系</a></li>
+<li><a href="#orgbd537ad">1.2.2. 泛洪（Flooding）：目标MAC未知时向所有端口转发</a></li>
+<li><a href="#orgc2ae2a9">1.2.3. 单播/广播/组播转发：三种帧类型的不同处理方式</a></li>
+<li><a href="#org7f7d402">1.2.4. 老化机制：MAC地址表条目超时自动删除（默认300秒）</a></li>
+</ul>
+</li>
+<li><a href="#org837182d">1.3. VLAN</a>
+<ul>
+<li><a href="#orgac0893a">1.3.1. Access端口：接终端设备，属于单一VLAN，去标签转发</a></li>
+<li><a href="#org305d369">1.3.2. Trunk端口：交换机间互联，携带多个VLAN的流量</a></li>
+<li><a href="#org68f5284">1.3.3. dot1q（802.1Q）：VLAN标签封装标准，4字节插入帧头</a></li>
+<li><a href="#org1a530bc">1.3.4. Native VLAN：Trunk上不打标签的VLAN，默认VLAN 1</a></li>
+<li><a href="#orga00207e">1.3.5. VLAN数据库：本地存储，默认不跨设备同步</a></li>
+</ul>
+</li>
+<li><a href="#orgdfdd78f">1.4. 生成树协议（STP）</a>
+<ul>
+<li><a href="#org96efcb4">1.4.1. STP（802.1D）：防止二层环路，选举根桥、根端口、指定端口</a></li>
+<li><a href="#orgd937214">1.4.2. RSTP（802.1W）：快速收敛版本，替代STP</a></li>
+<li><a href="#org36ef99b">1.4.3. MSTP（802.1S）：多实例生成树，不同VLAN跑不同拓扑</a></li>
+<li><a href="#org0fe1272">1.4.4. BPDU：桥协议数据单元，STP的控制报文</a></li>
+<li><a href="#orge8ecf27">1.4.5. 端口状态：Blocking → Listening → Learning → Forwarding</a></li>
+</ul>
+</li>
+<li><a href="#org09d038f">1.5. 链路聚合</a>
+<ul>
+<li><a href="#orgabc4a5a">1.5.1. LACP（802.3AD）：动态协商将多条物理链路绑成一条逻辑链路</a></li>
+<li><a href="#org7845f30">1.5.2. 静态聚合（Manual）：手动配置，不协商</a></li>
+<li><a href="#org569a746">1.5.3. 负载均衡模式：基于MAC、IP、端口的不同散列算法</a></li>
+</ul>
+</li>
+<li><a href="#org43c9256">1.6. 其他二层技术</a>
+<ul>
+<li><a href="#org65bd9b0">1.6.1. STP PortFast：终端接入端口跳过监听/学习阶段，直接进入转发</a></li>
+<li><a href="#org9db160f">1.6.2. BPDU Guard：PortFast端口收到BPDU立即关闭，防止非法交换机接入</a></li>
+<li><a href="#orgc9eb7a5">1.6.3. Storm Control：限制广播/组播/未知单播风暴阈值</a></li>
+<li><a href="#orgd0c952d">1.6.4. Port Security：限制端口允许的MAC地址数量或指定MAC</a></li>
+<li><a href="#org519f049">1.6.5. DHCP Snooping：防止非法DHCP服务器，建立IP-MAC-端口绑定表</a></li>
+<li><a href="#org983fd0c">1.6.6. Dynamic ARP Inspection（DAI）：基于DHCP Snooping表验证ARP合法性</a></li>
+<li><a href="#org4e75310">1.6.7. Private VLAN：同VLAN内的端口隔离</a></li>
+<li><a href="#orgc893fc7">1.6.8. VTP（VLAN Trunking Protocol）：Cisco私有，自动同步VLAN数据库</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdd050ab" class="outline-2">
+<h2 id="orgdd050ab"><span class="section-number-2">1.</span> 核心技术清单</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgacdbef2" class="outline-3">
+<h3 id="orgacdbef2"><span class="section-number-3">1.1.</span> 帧与寻址</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-org708f91b" class="outline-4">
+<h4 id="org708f91b"><span class="section-number-4">1.1.1.</span> 以太网帧格式：前导码、目标MAC、源MAC、类型/长度、数据、FCS校验</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+使用 WireShark 对以太网进行抓包，其中Ethernet II可以看到其帧格式:
+Destination:Broadcast(xx:xx:xx:xx:xx:xx)这是目标MAC地址
+Source: Private<sub>66</sub>:68:01(00:50:79:66:68:01)这是源MAC地址
+可能还会有所属VLAN
+Type:IPv4(0x0800)这是上层协议类型，还有ARP(0x0806)
+</p>
+</div>
+</div>
+<div id="outline-container-org10af91d" class="outline-4">
+<h4 id="org10af91d"><span class="section-number-4">1.1.2.</span> MAC地址：48位硬件地址，前24位OUI厂商码，后24位设备序列号</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+比如我这台机器的以太网MAC地址为(D8-BB-C1-3F-F9-46)
+D8-BB-C1表示微星OUI厂商码
+后24位则是表示本台设备
+</p>
+</div>
+</div>
+<div id="outline-container-orgb38bc3b" class="outline-4">
+<h4 id="orgb38bc3b"><span class="section-number-4">1.1.3.</span> ARP（地址解析协议）：IP → MAC 的映射，维护ARP缓存表</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+在win上可以在cmd使用arp -a查看ARP缓存表
+在正常流程下我打算发送一个我不知道目标MAC地址的信息
+我会发送查询这个IP对应的MAC地址，
+我知道会发送给交换机,但具体是谁广播我不太清楚
+在这个局域网的网段下收到这个广播消息的电脑会按照这个广播的发送源发送我是这个IP我的MAC地址是多少多少的消息
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org543306a" class="outline-3">
+<h3 id="org543306a"><span class="section-number-3">1.2.</span> 交换机工作原理</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-org3b24bc7" class="outline-4">
+<h4 id="org3b24bc7"><span class="section-number-4">1.2.1.</span> MAC地址表：交换机学习端口与MAC的对应关系</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+通过arp -a查看(win系统)
+</p>
+</div>
+</div>
+<div id="outline-container-orgbd537ad" class="outline-4">
+<h4 id="orgbd537ad"><span class="section-number-4">1.2.2.</span> 泛洪（Flooding）：目标MAC未知时向所有端口转发</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+泛洪就是对所有人发送
+主要危险的是恶意攻击或者接入另一台无人看管的交换机
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="orgdee4c79"></a>MAC泛洪攻击<br />
+<div class="outline-text-5" id="text-1-2-2-1">
+<p>
+恶意攻击，每秒发送上千条随机源MAC的帧
+将MAC表撑满，将正常设备的MAC条目挤出去
+使交换机退化成HUB模式，应该是会把所有信息都广播
+然后就可以抓到所有人的流量了
+</p>
+</div>
+</li>
+<li><a id="orgf3d74e5"></a>广播风暴<br />
+<div class="outline-text-5" id="text-1-2-2-2">
+<p>
+有人私接了无人看管的傻瓜交换机R2，且两根网线将其两个端口都插回了交换机形成回路
+有一台PC发送了一个广播帧然后
+公司交换机R1收到-&gt;群发所有人-&gt;R2收到-&gt;群发所有人-&gt;R1收到-&gt;循环
+</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgc2ae2a9" class="outline-4">
+<h4 id="orgc2ae2a9"><span class="section-number-4">1.2.3.</span> 单播/广播/组播转发：三种帧类型的不同处理方式</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+单播:目标地址是确定的IP和MAC
+广播:向同一网段的所有终端发送信息，一般此时MAC或者IP设备地址是全F
+组播:只发给订阅了该组的设备，不像广播发给所有人，广播相当于全校广播，所有人可见。组播是社团群消息，只有加入了社团群的能收到
+组播MAC地址特征:(01:00:5e:xx:xx:xx)IPv4组播固定前缀
+流程:
+PC 加入某个组，发送IGMP Membership Report报文
+路由器记录，某个端口
+路由器通过IGMP Snooping记录，如果没有的话，pc自己收到了会丢弃(没订阅的)
+路由器接收到来自这个组的消息，发送给订阅了这个组的pc所在端口
+路由器通过IGMP Snooping判断，发送给特定PC
+</p>
+</div>
+</div>
+<div id="outline-container-org7f7d402" class="outline-4">
+<h4 id="org7f7d402"><span class="section-number-4">1.2.4.</span> 老化机制：MAC地址表条目超时自动删除（默认300秒）</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+？没听说过
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org837182d" class="outline-3">
+<h3 id="org837182d"><span class="section-number-3">1.3.</span> VLAN</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="outline-container-orgac0893a" class="outline-4">
+<h4 id="orgac0893a"><span class="section-number-4">1.3.1.</span> Access端口：接终端设备，属于单一VLAN，去标签转发</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+普通终端就接这个口，可设置VLAN
+</p>
+</div>
+</div>
+<div id="outline-container-org305d369" class="outline-4">
+<h4 id="org305d369"><span class="section-number-4">1.3.2.</span> Trunk端口：交换机间互联，携带多个VLAN的流量</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+交换机接这个口，可以收到所有VLAN的流量
+</p>
+</div>
+</div>
+<div id="outline-container-org68f5284" class="outline-4">
+<h4 id="org68f5284"><span class="section-number-4">1.3.3.</span> dot1q（802.1Q）：VLAN标签封装标准，4字节插入帧头</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+VLAN标签的具体格式，4个字节插在交换机帧里:
+原始帧：[目标MAC][源MAC][类型][数据]
+打标签后：[目标MAC][源MAC][802.1Q 4字节][类型][数据]
+</p>
+</div>
+</div>
+<div id="outline-container-org1a530bc" class="outline-4">
+<h4 id="org1a530bc"><span class="section-number-4">1.3.4.</span> Native VLAN：Trunk上不打标签的VLAN，默认VLAN 1</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<p>
+默认VLAN1都是无帧的
+</p>
+</div>
+</div>
+<div id="outline-container-orga00207e" class="outline-4">
+<h4 id="orga00207e"><span class="section-number-4">1.3.5.</span> VLAN数据库：本地存储，默认不跨设备同步</h4>
+<div class="outline-text-4" id="text-1-3-5">
+<p>
+交换机本地的VLAN配置表，即GNS3上交换机，config的内容
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdfdd78f" class="outline-3">
+<h3 id="orgdfdd78f"><span class="section-number-3">1.4.</span> 生成树协议（STP）</h3>
+<div class="outline-text-3" id="text-1-4">
+</div>
+<div id="outline-container-org96efcb4" class="outline-4">
+<h4 id="org96efcb4"><span class="section-number-4">1.4.1.</span> STP（802.1D）：防止二层环路，选举根桥、根端口、指定端口</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+为了提高网络可靠性，我们使用<a href="/roam/notes/d43f0386-d4dd-4851-b0a6-b9f6b18d46be/index.html">STP生成树协议</a>避免环路带来的各种问题
+</p>
+</div>
+</div>
+<div id="outline-container-orgd937214" class="outline-4">
+<h4 id="orgd937214"><span class="section-number-4">1.4.2.</span> RSTP（802.1W）：快速收敛版本，替代STP</h4>
+</div>
+<div id="outline-container-org36ef99b" class="outline-4">
+<h4 id="org36ef99b"><span class="section-number-4">1.4.3.</span> MSTP（802.1S）：多实例生成树，不同VLAN跑不同拓扑</h4>
+</div>
+<div id="outline-container-org0fe1272" class="outline-4">
+<h4 id="org0fe1272"><span class="section-number-4">1.4.4.</span> BPDU：桥协议数据单元，STP的控制报文</h4>
+</div>
+<div id="outline-container-orge8ecf27" class="outline-4">
+<h4 id="orge8ecf27"><span class="section-number-4">1.4.5.</span> 端口状态：Blocking → Listening → Learning → Forwarding</h4>
+</div>
+</div>
+
+<div id="outline-container-org09d038f" class="outline-3">
+<h3 id="org09d038f"><span class="section-number-3">1.5.</span> 链路聚合</h3>
+<div class="outline-text-3" id="text-1-5">
+</div>
+<div id="outline-container-orgabc4a5a" class="outline-4">
+<h4 id="orgabc4a5a"><span class="section-number-4">1.5.1.</span> LACP（802.3AD）：动态协商将多条物理链路绑成一条逻辑链路</h4>
+</div>
+<div id="outline-container-org7845f30" class="outline-4">
+<h4 id="org7845f30"><span class="section-number-4">1.5.2.</span> 静态聚合（Manual）：手动配置，不协商</h4>
+</div>
+<div id="outline-container-org569a746" class="outline-4">
+<h4 id="org569a746"><span class="section-number-4">1.5.3.</span> 负载均衡模式：基于MAC、IP、端口的不同散列算法</h4>
+</div>
+</div>
+
+<div id="outline-container-org43c9256" class="outline-3">
+<h3 id="org43c9256"><span class="section-number-3">1.6.</span> 其他二层技术</h3>
+<div class="outline-text-3" id="text-1-6">
+</div>
+<div id="outline-container-org65bd9b0" class="outline-4">
+<h4 id="org65bd9b0"><span class="section-number-4">1.6.1.</span> STP PortFast：终端接入端口跳过监听/学习阶段，直接进入转发</h4>
+</div>
+<div id="outline-container-org9db160f" class="outline-4">
+<h4 id="org9db160f"><span class="section-number-4">1.6.2.</span> BPDU Guard：PortFast端口收到BPDU立即关闭，防止非法交换机接入</h4>
+</div>
+<div id="outline-container-orgc9eb7a5" class="outline-4">
+<h4 id="orgc9eb7a5"><span class="section-number-4">1.6.3.</span> Storm Control：限制广播/组播/未知单播风暴阈值</h4>
+</div>
+<div id="outline-container-orgd0c952d" class="outline-4">
+<h4 id="orgd0c952d"><span class="section-number-4">1.6.4.</span> Port Security：限制端口允许的MAC地址数量或指定MAC</h4>
+</div>
+<div id="outline-container-org519f049" class="outline-4">
+<h4 id="org519f049"><span class="section-number-4">1.6.5.</span> DHCP Snooping：防止非法DHCP服务器，建立IP-MAC-端口绑定表</h4>
+</div>
+<div id="outline-container-org983fd0c" class="outline-4">
+<h4 id="org983fd0c"><span class="section-number-4">1.6.6.</span> Dynamic ARP Inspection（DAI）：基于DHCP Snooping表验证ARP合法性</h4>
+</div>
+<div id="outline-container-org4e75310" class="outline-4">
+<h4 id="org4e75310"><span class="section-number-4">1.6.7.</span> Private VLAN：同VLAN内的端口隔离</h4>
+</div>
+<div id="outline-container-orgc893fc7" class="outline-4">
+<h4 id="orgc893fc7"><span class="section-number-4">1.6.8.</span> VTP（VLAN Trunking Protocol）：Cisco私有，自动同步VLAN数据库</h4>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ROAM_BACKLINKS_START -->
+<nav class="site-nav"><a href="/roam/index.html">← 返回笔记首页</a></nav>
+<section class="backlinks">
+  <h2>反向链接</h2>
+  <ul>
+    <li>暂无反向链接</li>
+  </ul>
+</section>
+<!-- ROAM_BACKLINKS_END -->
+
+</body>
+</html>

@@ -1,42 +1,60 @@
+/* 
+  tokens.css
+  设计系统变量集中管理。
+
+  以后如果想换整体风格，优先改这里：
+  - 颜色
+  - 字体
+  - 圆角
+  - 阴影
+  - 毛玻璃模糊
+  - 动画速度
+*/
+
 :root {
-  /* colors */
+  /* ===== 基础背景色 ===== */
   --c-bg: #090a09;
   --c-bg-deep: #050605;
+
+  /* ===== 表面色：用于卡片、导航、浮层 ===== */
   --c-surface: rgba(255, 255, 255, 0.045);
   --c-surface-strong: rgba(255, 255, 255, 0.075);
 
-  --c-text: #eceee9;
-  --c-muted: #979d93;
-  --c-dim: #5d645b;
+  /* ===== 文本颜色 ===== */
+  --c-text: #eceee9;      /* 主文本 */
+  --c-muted: #979d93;     /* 次级文本 */
+  --c-dim: #5d645b;       /* 弱文本 / 装饰信息 */
 
+  /* ===== 边框颜色 ===== */
   --c-line: rgba(255, 255, 255, 0.09);
   --c-line-strong: rgba(255, 255, 255, 0.18);
 
-  --c-accent: #9af5c8;
-  --c-warm: #d8c38b;
-  --c-blue: #9db7e8;
+  /* ===== 主题点缀色 ===== */
+  --c-accent: #9af5c8;    /* 主绿色 */
+  --c-warm: #d8c38b;      /* 暖色，用于太阳/高光 */
+  --c-blue: #9db7e8;      /* 冷蓝色，用于电子/开发板氛围 */
 
-  /* fonts */
+  /* ===== 字体族 ===== */
   --font-sans: Inter, 'Noto Sans SC', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --font-serif-cn: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
   --font-serif-en: Georgia, 'Times New Roman', serif;
 
-  /* radius */
+  /* ===== 圆角等级 ===== */
   --r-sm: 12px;
   --r-md: 18px;
   --r-lg: 26px;
   --r-xl: 36px;
   --r-pill: 999px;
 
-  /* shadow */
+  /* ===== 阴影等级 ===== */
   --shadow-float: 0 18px 70px rgba(0, 0, 0, 0.36);
   --shadow-hero: 0 28px 100px rgba(0, 0, 0, 0.54);
   --shadow-card: 0 24px 70px rgba(0, 0, 0, 0.28);
 
-  /* blur */
+  /* ===== 毛玻璃强度 ===== */
   --blur-glass: 18px;
 
-  /* motion */
+  /* ===== 动画统一速度 ===== */
   --ease: 0.22s ease;
 }

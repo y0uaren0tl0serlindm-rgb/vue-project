@@ -2,7 +2,12 @@
   <header class="nav-wrap">
     <nav class="nav-bar" aria-label="main navigation">
       <div class="nav-left">
-        <button class="hamburger" type="button" aria-label="toggle sidebar" @click="$emit('toggle-sidebar')">
+        <button
+          class="hamburger"
+          type="button"
+          aria-label="toggle sidebar"
+          @click="$emit('toggle-sidebar')"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -15,14 +20,27 @@
       </div>
 
       <div class="nav-center">
-        <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-link">
-          <!-- 注释掉这行显示index 但是保留index属性  <span class="nav-index">{{ item.index }}</span>  -->
+        <RouterLink
+          v-for="item in navItems"
+          :key="item.to"
+          :to="item.to"
+          class="nav-link"
+        >
           <span>{{ item.label }}</span>
         </RouterLink>
       </div>
 
       <div class="nav-right">
-        <span class="quiet-tag">field · shell · board</span>
+        
+
+        <a
+          class="roam-entry"
+          href="/roam/index.html"
+          aria-label="open org-roam notes network"
+        >
+          <span class="roam-dot"></span>
+          <span>笔记网络</span>
+        </a>
       </div>
     </nav>
   </header>
@@ -192,24 +210,13 @@ const navItems = [
   box-shadow: inset 0 0 0 1px rgba(154,245,200,0.13);
 }
 
-.nav-index {
-  color: #5d645b;
-  font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-}
-
-.nav-link.router-link-active .nav-index,
-.nav-link.router-link-exact-active .nav-index {
-  color: rgba(154,245,200,0.78);
-}
-
 .nav-right {
   justify-content: flex-end;
+  gap: 10px;
 }
 
 .quiet-tag {
-  padding: 0 14px;
+  padding: 0 8px;
   color: #5d645b;
   font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace);
   font-size: 11px;
@@ -217,17 +224,65 @@ const navItems = [
   white-space: nowrap;
 }
 
+.roam-entry {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 15px;
+  border: 1px solid rgba(154, 245, 200, 0.24);
+  border-radius: 999px;
+  color: #dfffee;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background:
+    linear-gradient(135deg, rgba(154,245,200,0.18), rgba(154,245,200,0.04)),
+    rgba(154,245,200,0.05);
+  box-shadow:
+    inset 0 0 0 1px rgba(154,245,200,0.06),
+    0 0 28px rgba(154,245,200,0.06);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.roam-entry:hover {
+  transform: translateY(-1px);
+  border-color: rgba(154,245,200,0.46);
+  background:
+    linear-gradient(135deg, rgba(154,245,200,0.24), rgba(154,245,200,0.07)),
+    rgba(154,245,200,0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(154,245,200,0.1),
+    0 0 34px rgba(154,245,200,0.12);
+}
+
+.roam-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #9af5c8;
+  box-shadow: 0 0 14px rgba(154,245,200,0.9);
+}
+
+@media (max-width: 960px) {
+  .quiet-tag {
+    display: none;
+  }
+}
+
 @media (max-width: 880px) {
   .nav-bar {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
   }
 
   .nav-center {
     justify-content: flex-end;
-  }
-
-  .nav-right {
-    display: none;
   }
 
   .brand-text {
@@ -235,7 +290,7 @@ const navItems = [
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .nav-wrap {
     padding: 10px 10px 0;
   }
@@ -270,8 +325,13 @@ const navItems = [
     padding: 0 10px;
   }
 
-  .nav-index {
-    display: none;
+  .nav-right {
+    width: 100%;
+  }
+
+  .roam-entry {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

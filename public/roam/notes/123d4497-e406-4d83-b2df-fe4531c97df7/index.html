@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-05-11 Mon 02:50 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Linux hello内核模块 Makefile</title>
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet" href="/roam/style.css">
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Linux hello内核模块 Makefile</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org6a7eab6">1. 解读</a>
+<ul>
+<li><a href="#org7f6dc75">1.1. obj-m += hello.o</a></li>
+<li><a href="#orgc5a6497">1.2. make -C /lib/modules/\((shell uname -r)/build M=\)(PWD) modules</a>
+<ul>
+<li><a href="#org668856e">1.2.1. -C</a></li>
+<li><a href="#orgbecebd8">1.2.2. M=$(PWD)</a></li>
+<li><a href="#orgadb0407">1.2.3. module</a></li>
+</ul>
+</li>
+<li><a href="#org5e04709">1.3. make -C /lib/modules/\((shell uname -r)/build M=\)(PWD) clean</a>
+<ul>
+<li><a href="#orgdfa2f49">1.3.1. clean</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Makefile内容
+</p>
+<div class="org-src-container">
+<pre class="src src-makefile">obj-m += hello.o
+
+all:
+make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
+clean:
+make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+</pre>
+</div>
+<div id="outline-container-org6a7eab6" class="outline-2">
+<h2 id="org6a7eab6"><span class="section-number-2">1.</span> 解读</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org7f6dc75" class="outline-3">
+<h3 id="org7f6dc75"><span class="section-number-3">1.1.</span> obj-m += hello.o</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+这个代码意思是
+我有一个目标叫hello.o，请按 <b><b>模块</b></b> (m for module)的规矩处理它
+kbuild看到这行就会自动找对应的hello.c去编
+如果写 <b><b>obj-y</b></b> 就变成了按 <b><b>内置代码</b></b> 编，这会把代码便进内核本体
+</p>
+</div>
+</div>
+<div id="outline-container-orgc5a6497" class="outline-3">
+<h3 id="orgc5a6497"><span class="section-number-3">1.2.</span> make -C /lib/modules/\((shell uname -r)/build M=\)(PWD) modules</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-org668856e" class="outline-4">
+<h4 id="org668856e"><span class="section-number-4">1.2.1.</span> -C</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+先 cd 进入这个目录再执行make。走进<a href="/roam/notes/cd3af53c-9ba3-42bd-a499-ca98e21a4ca9/index.html">Linux内核源码树</a>
+为啥要进去？因为编内核模块的所有规矩、模板、头文件路径，都在内核源码树里现成准备好了。你不用自己重造这套东西，借用就行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbecebd8" class="outline-4">
+<h4 id="orgbecebd8"><span class="section-number-4">1.2.2.</span> M=$(PWD)</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+进入源码树后，再告诉kbuild:"真正要编的源文件在 <b><b>M</b></b> 这个路径下"即当前目录
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgadb0407" class="outline-4">
+<h4 id="orgadb0407"><span class="section-number-4">1.2.3.</span> module</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+是 kbuild 内置的目标名，意思是"按外部模块的方式构建"
+合起来这句话是："借用内核源码树的工具和规矩，去编我这边的代码。"
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5e04709" class="outline-3">
+<h3 id="org5e04709"><span class="section-number-3">1.3.</span> make -C /lib/modules/\((shell uname -r)/build M=\)(PWD) clean</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="outline-container-orgdfa2f49" class="outline-4">
+<h4 id="orgdfa2f49"><span class="section-number-4">1.3.1.</span> clean</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+同理，借用内核的清理规则。
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ROAM_BACKLINKS_START -->
+<nav class="site-nav"><a href="/roam/index.html">← 返回笔记首页</a></nav>
+<section class="backlinks">
+  <h2>反向链接</h2>
+  <ul>
+    <li><a href="/roam/notes/df4c5a62-1e54-4a25-82cc-fa324ab46f88/index.html">Linux内核模块</a></li>
+  </ul>
+</section>
+<!-- ROAM_BACKLINKS_END -->
+
+</body>
+</html>

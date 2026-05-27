@@ -1,15 +1,39 @@
+/*
+  utilities.css
+  可复用工具类。
+
+  这里放跨组件通用的小样式，比如：
+  - 毛玻璃
+  - 卡片外观
+  - 无下划线链接
+  - 小型等宽标签
+
+  注意：
+  不要把具体组件结构写在这里。
+  例如 .nav-bar / .hero / .module-card 不应该放这里。
+*/
+
+/* 毛玻璃浮层：适合 NavBar、浮动面板 */
 .u-glass {
   border: 1px solid var(--c-line);
+
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.026)),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.026)
+    ),
     rgba(9, 10, 9, 0.68);
+
   box-shadow:
     var(--shadow-float),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
   backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
 }
 
+/* 通用卡片壳 */
 .u-card {
   border: 1px solid var(--c-line);
   border-radius: var(--r-lg);
@@ -17,11 +41,13 @@
   overflow: hidden;
 }
 
+/* 去掉链接默认下划线 */
 .u-link-clean {
   color: inherit;
   text-decoration: none;
 }
 
+/* 小型等宽标签：适合编号、状态、英文小标题 */
 .u-mono-label {
   font-family: var(--font-mono);
   font-size: 11px;

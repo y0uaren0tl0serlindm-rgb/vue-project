@@ -1,3 +1,16 @@
+/*
+  base.css
+  全局基础样式。
+
+  这里只放最基础的页面规则：
+  - box-sizing
+  - body
+  - 链接默认样式
+  - 图片默认约束
+
+  不要在这里写具体页面布局。
+*/
+
 *,
 *::before,
 *::after {
@@ -11,13 +24,23 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+
   color: var(--c-text);
   background: var(--c-bg);
+
   font-family: var(--font-sans);
+
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 a {
   color: inherit;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  display: block;
 }

@@ -1,3 +1,18 @@
+/*
+  effects.css
+  可复用视觉效果。
+
+  这里放“效果层”：
+  - 细颗粒
+  - 暗角
+  - 发光
+
+  注意：
+  如果某个效果只服务于单个组件，比如 Hero 的特殊舞台遮罩，
+  可以留在组件内部，不必强行抽出来。
+*/
+
+/* 细颗粒层：增加一点屏幕/胶片质感 */
 .fx-noise {
   position: relative;
 }
@@ -7,11 +22,16 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+
   opacity: 0.02;
-  background-image: radial-gradient(circle, #fff 0 0.45px, transparent 0.8px);
+
+  background-image:
+    radial-gradient(circle, #fff 0 0.45px, transparent 0.8px);
+
   background-size: 10px 10px;
 }
 
+/* 暗角层：让边缘更沉，中间更突出 */
 .fx-vignette {
   position: relative;
 }
@@ -21,10 +41,12 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    transparent 42%,
-    rgba(0, 0, 0, 0.44) 100%
-  );
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 42%,
+      rgba(0, 0, 0, 0.44) 100%
+    );
 }

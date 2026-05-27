@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Org-roam Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/roam/style.css">
+</head>
+
+<body>
+  <main class="notes-app">
+    <section class="hero">
+      <div class="hero-kicker">ORG-ROAM STATIC NETWORK</div>
+      <h1>笔记网络</h1>
+      <p>
+        从 org-roam 数据库导出的静态知识网络。支持标题、标签、别名搜索，并保留笔记之间的跳转关系。
+      </p>
+    </section>
+
+    <section class="search-panel">
+      <div class="search-box">
+        <input
+          id="search"
+          class="search-input"
+          placeholder="搜索笔记标题、标签、别名，例如：ISO、光圈、photo、Linux"
+        >
+        <button id="clearSearch" class="clear-button" type="button">清空</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <span id="noteCount">0</span>
+          <small>Notes</small>
+        </div>
+        <div class="stat-card">
+          <span id="moduleCount">7</span>
+          <small>Modules</small>
+        </div>
+        <div class="stat-card">
+          <span id="tagCount">0</span>
+          <small>Tags</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="module-section">
+      <div class="section-title">
+        <h2>模块</h2>
+        <p>按照 org-roam 的 7 个文件夹固定分组</p>
+      </div>
+
+      <div id="moduleGrid" class="module-grid"></div>
+    </section>
+
+    <section class="results-section">
+      <div class="section-title">
+        <h2 id="resultsTitle">全部笔记</h2>
+        <p id="resultsDesc">按模块浏览，也可以直接搜索</p>
+      </div>
+
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <script>
+    let notes = [];
+    let activeModule = null;
+
+    const moduleOrder = [
+      'concepts',
+      'daily',
+      'entities',
+      'fleeting',
+      'literature',
+      'photo',
+      'projects'
+    ];
+
+    const moduleMeta = {
+      concepts: {
+        name: '概念',
+        desc: '长期沉淀的概念、定义、方法论'
+      },
+      daily: {
+        name: '日记',
+        desc: '按日期记录的工作、学习和生活日志'
+      },
+      entities: {
+        name: '实体',
+        desc: '人物、设备、软件、公司、地点等对象'
+      },
+      fleeting: {
+        name: '闪念',
+        desc: '临时想法、灵感、待整理内容'
+      },
+      literature: {
+        name: '文献',
+        desc: '书籍、论文、资料、文章摘录'
+      },
+      photo: {
+        name: '摄影',
+        desc: '摄影知识、器材、拍摄经验'
+      },
+      projects: {
+        name: '项目',
+        desc: '具体项目、任务、长期推进事项'
+      },
+      default: {
+        name: '未分类',
+        desc: '未归入固定模块的笔记'
+      }
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function getModuleName(item) {
+      const file = item.file || '';
+
+      /*
+        你的路径大致是：
+        /home/sisyphus/work/USR/roam/concepts/xxx.org
+        /home/sisyphus/work/USR/roam/daily/xxx.org
+      */
+      const match = file.match(/\/roam\/([^/]+)\//);
+
+      if (!match) return 'default';
+
+      return match[1];
+    }
+
+    function getDisplayModuleName(moduleKey) {
+      return moduleMeta[moduleKey]?.name || moduleKey;
+    }
+
+    function getModuleDesc(moduleKey) {
+      return moduleMeta[moduleKey]?.desc || '自定义模块';
+    }
+
+    function groupByModule(items) {
+      const groups = {};
+
+      items.forEach(item => {
+        const moduleKey = getModuleName(item);
+
+        if (!groups[moduleKey]) {
+          groups[moduleKey] = [];
+        }
+
+        groups[moduleKey].push(item);
+      });
+
+      return groups;
+    }
+
+    function getAllTags(items) {
+      const set = new Set();
+
+      items.forEach(item => {
+        (item.tags || []).forEach(tag => set.add(tag));
+      });
+
+      return Array.from(set);
+    }
+
+    async function loadIndex() {
+      const res = await fetch('/roam/search-index.json');
+      notes = await res.json();
+
+      renderStats();
+      renderModules();
+      renderNotes(notes);
+    }
+
+    function renderStats() {
+      const tags = getAllTags(notes);
+
+      document.getElementById('noteCount').textContent = notes.length;
+      document.getElementById('moduleCount').textContent = moduleOrder.length;
+      document.getElementById('tagCount').textContent = tags.length;
+    }
+
+    function renderModules() {
+      const groups = groupByModule(notes);
+      const moduleGrid = document.getElementById('moduleGrid');
+
+      moduleGrid.innerHTML = moduleOrder.map(moduleKey => {
+        const items = groups[moduleKey] || [];
+        const displayName = getDisplayModuleName(moduleKey);
+        const desc = getModuleDesc(moduleKey);
+        const sample = items[0];
+
+        return `
+          <button class="module-card" data-module="${escapeHtml(moduleKey)}">
+            <div class="module-card-top">
+              <span class="module-name">${escapeHtml(displayName)}</span>
+              <span class="module-count">${items.length}</span>
+            </div>
+            <p>${escapeHtml(desc)}</p>
+            <small>${sample ? `包含：${escapeHtml(sample.title)}` : '暂无笔记'}</small>
+          </button>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.module-card').forEach(card => {
+        card.addEventListener('click', () => {
+          activeModule = card.dataset.module;
+
+          document.querySelectorAll('.module-card').forEach(x => {
+            x.classList.remove('active');
+          });
+
+          card.classList.add('active');
+
+          const filtered = notes.filter(item => getModuleName(item) === activeModule);
+
+          document.getElementById('search').value = '';
+          document.getElementById('resultsTitle').textContent = getDisplayModuleName(activeModule);
+          document.getElementById('resultsDesc').textContent = `当前模块共 ${filtered.length} 篇笔记`;
+
+          renderNotes(filtered);
+        });
+      });
+    }
+
+    function renderNotes(items) {
+      const box = document.getElementById('results');
+
+      if (!items.length) {
+        box.innerHTML = '<p class="empty">没有找到结果。</p>';
+        return;
+      }
+
+      const groups = groupByModule(items);
+
+      const orderedKeys = [
+        ...moduleOrder.filter(key => groups[key] && groups[key].length),
+        ...Object.keys(groups).filter(key => !moduleOrder.includes(key))
+      ];
+
+      box.innerHTML = orderedKeys.map(moduleKey => {
+        const groupItems = groups[moduleKey];
+        const displayName = getDisplayModuleName(moduleKey);
+
+        const cards = groupItems.map(item => {
+          const tags = item.tags && item.tags.length
+            ? `
+              <div class="tags">
+                ${item.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('')}
+              </div>
+            `
+            : '';
+
+          return `
+            <article class="note-card">
+              <div class="note-main">
+                <h3>
+                  <a href="${escapeHtml(item.url)}">${escapeHtml(item.title)}</a>
+                </h3>
+                ${tags}
+                <p class="path">${escapeHtml(item.file)}</p>
+              </div>
+              <a class="open-note" href="${escapeHtml(item.url)}">打开</a>
+            </article>
+          `;
+        }).join('');
+
+        return `
+          <div class="module-group">
+            <h3 class="module-group-title">${escapeHtml(displayName)}</h3>
+            ${cards}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function searchNotes(query) {
+      const q = query.trim().toLowerCase();
+
+      activeModule = null;
+
+      document.querySelectorAll('.module-card').forEach(x => {
+        x.classList.remove('active');
+      });
+
+      if (!q) {
+        document.getElementById('resultsTitle').textContent = '全部笔记';
+        document.getElementById('resultsDesc').textContent = '按模块浏览，也可以直接搜索';
+        renderNotes(notes);
+        return;
+      }
+
+      const filtered = notes.filter(item => {
+        const text = [
+          item.title || '',
+          ...(item.aliases || []),
+          ...(item.tags || []),
+          item.search_text || ''
+        ].join(' ').toLowerCase();
+
+        return text.includes(q);
+      });
+
+      document.getElementById('resultsTitle').textContent = `搜索：${query}`;
+      document.getElementById('resultsDesc').textContent = `找到 ${filtered.length} 条结果`;
+
+      renderNotes(filtered);
+    }
+
+    document.getElementById('search').addEventListener('input', e => {
+      searchNotes(e.target.value);
+    });
+
+    document.getElementById('clearSearch').addEventListener('click', () => {
+      document.getElementById('search').value = '';
+      activeModule = null;
+
+      document.querySelectorAll('.module-card').forEach(x => {
+        x.classList.remove('active');
+      });
+
+      document.getElementById('resultsTitle').textContent = '全部笔记';
+      document.getElementById('resultsDesc').textContent = '按模块浏览，也可以直接搜索';
+
+      renderNotes(notes);
+    });
+
+    loadIndex();
+  </script>
+</body>
+</html>
